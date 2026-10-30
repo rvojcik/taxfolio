@@ -1,0 +1,86 @@
+name: Release
+
+# A tag v<version> (matching pyproject.toml) builds the installers for Windows, macOS and Linux
+# and publishes them as a GitHub release. "Run workflow" builds them without publishing (test).
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  # Windows runners default to cp1252; the app name and texts contain Czech characters
+  PYTHONUTF8: "1"
+  PYTHONIOENCODING: utf-8
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          python-version: "3.12"
+      - name: Tag matches the version in pyproject.toml
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: uv run --no-project python packaging/release_info.py check-tag "${GITHUB_REF_NAME}"
+      - run: sudo apt-get update && sudo apt-get install -y libegl1 libgl1 libxkbcommon0 libfontconfig1
+      - run: uv sync
+      - run: uv run ruff check . && uv run mypy src
+      - run: uv run pytest -q
+        env:
+          QT_QPA_PLATFORM: offscreen
+
+  build:
+    needs: test
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04  # AppImage needs glibc 2.39+ (Ubuntu 24.04, Debian 13, Fedora 40 and newer)
+          - os: windows-latest
+          - os: macos-15  # Apple Silicon (macOS 14 runners are being retired)
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          python-version: "3.12"
+      - name: Build tools (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libegl1 libgl1 libxkbcommon0 libfontconfig1 file
+      - name: Inno Setup (Windows)
+        if: runner.os == 'Windows'
+        run: choco install innosetup --no-progress -y
+      - run: uv sync --group build
+      - run: uv run --group build python packaging/build.py
+        env:
+          QT_QPA_PLATFORM: offscreen
+      - uses: actions/upload-artifact@v7
+        with:
+          name: installer-${{ matrix.os }}
+          path: |
+            dist/*.AppImage
+            dist/*-Setup.exe
+            dist/*.dmg
+          if-no-files-found: error
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          path: installers
+          merge-multiple: true
+      - name: Release notes from CHANGELOG.md
+        run: python3 packaging/release_info.py notes "${GITHUB_REF_NAME#v}" > release-notes.md
+      - uses: softprops/action-gh-release@v3
+        with:
+          name: ${{ github.ref_name }}
+          body_path: release-notes.md
+          files: installers/*

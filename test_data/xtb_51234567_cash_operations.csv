@@ -1,0 +1,24 @@
+Account number;51234567
+Currency;EUR
+Date from (UTC);2023-01-01 00:00:00
+Date to (UTC);2025-12-31 23:59:59
+Type;Ticker;Instrument;Time;Amount;ID;Comment;Product
+Deposit;;;2023-03-01 09:00:00;5000;600001;Deposit, id=111;My Trades
+Stock purchase;SAP.DE;SAP SE;2023-03-02 10:15:00;-1200;600002;OPEN BUY 10 @ 120.00;My Trades
+Stock purchase;MSFT.US;Microsoft Corp;2023-03-02 15:40:00;-1170;600003;OPEN BUY 5 @ 250.00;My Trades
+Stock purchase;IUSA.DE;iShares Core S&P 500 UCITS ETF (Dist);2023-06-15 11:00:00;-1000;600004;OPEN BUY 25 @ 40.00;My Trades
+Profit/Loss (FX/CFD);EURUSD;;2023-09-20 14:00:00;12,5;600005;Profit of position #685669464;My Trades
+Free funds interest;;;2024-01-05 10:00:00;4,2;600006;Free-funds Interest 2023-12;My Trades
+Free funds interest tax;;;2024-01-05 10:00:00;-0,8;600007;Free-funds Interest Tax 2023-12;My Trades
+Dividend;SAP.DE;SAP SE;2024-05-20 11:00:00;22;600008;SAP.DE EUR 2.2000/ SHR;My Trades
+Withholding tax;SAP.DE;SAP SE;2024-05-20 11:00:00;-5,8;600009;SAP.DE EUR WHT 26.375%;My Trades
+Dividend;MSFT.US;Microsoft Corp;2024-06-13 11:00:00;3,4;600010;MSFT.US USD 0.7500/ SHR;My Trades
+Withholding tax;MSFT.US;Microsoft Corp;2024-06-13 11:00:00;-0,51;600011;MSFT.US USD WHT 15%;My Trades
+Stock sale;SAP.DE;SAP SE;2024-09-10 10:30:00;900;600012;CLOSE BUY 5 @ 180.00;My Trades
+Dividend;IUSA.DE;iShares Core S&P 500 UCITS ETF (Dist);2024-12-27 11:00:00;7,5;600013;IUSA.DE USD 0.3000/ SHR;My Trades
+Stock purchase;CEZ.CZ;CEZ;2025-01-10 09:30:00;-800;600014;OPEN BUY 20 @ 1000.00;My Trades
+Stock sale;MSFT.US;Microsoft Corp;2025-03-05 16:00:00;1850;600015;CLOSE BUY 5 @ 400.00;My Trades
+Commission;MSFT.US;Microsoft Corp;2025-03-05 16:00:00;-3,7;600016;Commission;My Trades
+Stock sale;CEZ.CZ;CEZ;2025-06-10 10:00:00;880;600017;CLOSE BUY 20 @ 1100.00;My Trades
+Withdrawal;;;2025-07-01 08:00:00;-500;600018;Withdrawal to bank account;My Trades
+Total;;;;3998,79;;;

@@ -1,0 +1,27 @@
+# Česká republika – zdaňovací období 2026
+country: CZ
+year: 2026
+currency: CZK
+sources:
+  - "ZDP 586/1992 Sb. § 4 odst. 1 (osvobození prodeje CP), § 8, § 10, § 16, § 38f, § 38v"
+  - "Novela ZDP 2025: zrušení stropu 40 mil. Kč pro CP od 1. 1. 2026"
+securities:
+  section: "§ 10 odst. 1 písm. b) bod 1"
+  time_test_years: 3
+  time_test_cap: null            # od 2026 strop pro CP zrušen (zůstává jen pro kryptoaktiva)
+  gross_income_limit: 100000
+  # Zda se do limitu 100 000 Kč započítávají i prodeje osvobozené časovým testem.
+  # Zdroje se neshodují (❓) – výchozí je opatrnější varianta (započítávají se).
+  limit_includes_time_tested: true
+  loss_carry_forward: false
+income_tax:
+  rate: 0.15
+  higher_rate: 0.23
+  higher_rate_threshold: 1762812  # 36násobek průměrné mzdy 2026 (❓ ověřit)
+dividends:
+  domestic_country: CZ           # tuzemské dividendy: srážková daň u zdroje, do DAP nevstupují
+  domestic_rate: 0.15
+  # Max. zahraniční daň započitatelná dle smlouvy o zamezení dvojímu zdanění (portfoliové dividendy)
+  treaty_rates:
+    default: 0.15
+exempt_notification_limit: 5000000

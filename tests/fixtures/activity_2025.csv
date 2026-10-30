@@ -1,0 +1,41 @@
+Statement,Header,Field Name,Field Value
+Statement,Data,BrokerName,Interactive Brokers Ireland Limited
+Statement,Data,Title,Activity Statement
+Statement,Data,Period,"January 1, 2025 - December 31, 2025"
+Account Information,Header,Field Name,Field Value
+Account Information,Data,Name,Test User
+Account Information,Data,Account,U0000001
+Account Information,Data,Base Currency,EUR
+Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,MTM P/L,Code
+Trades,Data,Order,Stocks,USD,AAPL,"2025-02-13, 10:57:30",2,239.14,241.53,-478.28,-1.000092,479.280092,0,4.78,O
+Trades,Data,Order,Stocks,USD,AAPL,"2025-03-04, 09:46:30",-2,250,250,500,-1,-479.280092,19.719908,0,C
+Trades,SubTotal,,Stocks,USD,AAPL,,0,,,21.72,-2.000092,0,19.719908,4.78,
+Trades,Data,Order,Stocks,EUR,EXSAd,"2025-08-12, 04:40:27",20,54.79,54.73,-1095.8,-3,1098.8,0,-1.2,IA;O
+Trades,Total,,Stocks,EUR,,,,,,-1095.8,-3,1098.8,0,-1.2,
+Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,,Proceeds,Comm in EUR,,,MTM in EUR,Code
+Trades,Data,Order,Forex,CZK,EUR.CZK,"2025-01-02, 17:00:00",-0.00159062,25.14739198,,0.039999995,0,,,-0.000001,AFx
+Trades,Data,Order,Forex,USD,EUR.USD,"2025-01-02, 17:00:00",1000,1.03,,-1030,-1.7,,,0,
+Corporate Actions,Header,Asset Category,Currency,Report Date,Date/Time,Description,Quantity,Proceeds,Value,Realized P/L,Code
+Corporate Actions,Data,Stocks,USD,2025-06-10,"2025-06-07, 20:25:00","NVDA(US67066G1040) Split 10 for 1 (NVDA, NVIDIA CORP, US67066G1040)",18,0,0,0,
+Corporate Actions,Data,Total,,,,,,0,0,0,
+Deposits & Withdrawals,Header,Currency,Settle Date,Description,Amount
+Deposits & Withdrawals,Data,EUR,2025-02-04,Electronic Fund Transfer,2000
+Deposits & Withdrawals,Data,EUR,2025-03-04,Disbursement,-500
+Deposits & Withdrawals,Data,Total,,,1500
+Fees,Header,Subtitle,Currency,Date,Description,Amount
+Fees,Data,Other Fees,CZK,2025-01-02,CZK CUSTODY FEE FOR 2024-12-31 FOR JAN 2025,-0.02
+Fees,Data,Total,,,,-0.02
+Dividends,Header,Currency,Date,Description,Amount
+Dividends,Data,USD,2025-02-21,COST(US22160K1051) Cash Dividend USD 1.16 per Share (Ordinary Dividend),1.16
+Dividends,Data,Total,,,1.16
+Dividends,Data,Total in EUR,,,1.1
+Withholding Tax,Header,Currency,Date,Description,Amount,Code
+Withholding Tax,Data,USD,2025-02-21,COST(US22160K1051) Cash Dividend USD 1.16 per Share - US Tax,-0.17,
+Withholding Tax,Data,Total,,,-0.17,
+Open Positions,Header,DataDiscriminator,Asset Category,Currency,Symbol,Quantity,Mult,Cost Price,Cost Basis,Close Price,Value,Unrealized P/L,Code
+Open Positions,Data,Summary,Stocks,EUR,EXSAd,20,1,54.94,1098.8,56,1120,21.2,
+Open Positions,Total,,Stocks,EUR,,,,,1098.8,,1120,21.2,
+Financial Instrument Information,Header,Asset Category,Symbol,Description,Conid,Security ID,Underlying,Listing Exch,Multiplier,Type,Code
+Financial Instrument Information,Data,Stocks,AAPL,APPLE INC,265598,US0378331005,AAPL,NASDAQ,1,COMMON,
+Financial Instrument Information,Data,Stocks,COST,COSTCO WHOLESALE CORP,272997,US22160K1051,COST,NASDAQ,1,COMMON,
+Financial Instrument Information,Data,Stocks,"EXSA, EXSAd",ISHARES STOXXE600 DE EUR DIS,123456,DE0002635307,EXSA,IBIS,1,ETF,

@@ -1,0 +1,38 @@
+# Slovenská republika – zdaňovacie obdobie 2025
+country: SK
+year: 2025
+currency: EUR
+sources:
+  - "ZDP 595/2003 Z. z. § 8 ods. 1 písm. e), § 9 ods. 1 písm. i), k), § 51e"
+  - "Finančná správa: Príjmy FO z predaja cenných papierov; Príjem charakteru dividend zo zahraničia"
+securities:
+  section: "§ 8 ods. 1 písm. e)"
+  time_test_years: 1             # držba musí presiahnuť 1 rok
+  require_regulated_market: true # a CP musí byť prijatý na regulovaný (aj zahraničný) trh
+  exemption: 500                 # oslobodenie úhrnu (príjmy − výdavky) do 500 €
+  loss_carry_forward: false
+income_tax:
+  brackets:                      # sadzby na základ dane (vrátane § 8)
+    - { up_to: 48441.43, rate: 0.19 }  # 176,8-násobok životného minima
+    - { up_to: null, rate: 0.25 }
+health_insurance:
+  rate: 0.16                     # ❓ zdravotné poistenie z § 8 – overiť u poisťovne
+dividends:
+  # sadzba podľa roka, za ktorý bol zisk vykázaný (rok výplaty − 1, ak nie je zadané inak)
+  profit_year_rates:
+    - { from: 2017, to: 2023, rate: 0.07 }
+    - { from: 2024, to: 2024, rate: 0.10 }
+    - { from: 2025, to: null, rate: 0.07 }
+  non_cooperating_rate: 0.35
+  non_cooperating_states: []     # zoznam nespolupracujúcich štátov (ISO kódy)
+  treaty_rates:                  # max. započítateľná zahraničná daň podľa zmluvy
+    default: 0.15
+    AT: 0.10
+    NL: 0.10
+fx:
+  source: ECB
+  rate_day: same                 # ❓ deň transakcie vs. predchádzajúci deň (§ 31 ZDP)
+regulated_exchanges: [NASDAQ, NYSE, ARCA, AMEX, BATS, NYSE ARCA, LSE, LSEETF, IBIS, IBIS2, FWB, FWB2, GETTEX,
+                      SBF, AEB, ENEXT.BE, BVME, BVME.ETF, BM, SWX, EBS, VSE, PRA, WSE, BUX, TSE, TSX, ASX, SEHK,
+                      # XTB: burza podľa prípony symbolu (AAPL.US)
+                      XTB:US, XTB:UK, XTB:DE, XTB:FR, XTB:NL, XTB:ES, XTB:IT, XTB:BE, XTB:PT, XTB:FI, XTB:IE, XTB:PL, XTB:CZ, XTB:DK, XTB:SE, XTB:NO, XTB:CH]

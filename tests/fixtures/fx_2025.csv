@@ -1,0 +1,6 @@
+ReportSummary,Header,Title,Year,AccountID,AccountName,FunctionalCurrency,
+ReportSummary,Data,FX Income Worksheet,2025,U0000001,Test User,EUR,
+FXDetail,Header,FxCurrency,DescriptionOfCurrencyPosition,DateAcquired,SourceOfAcquisition,DateOfDisposition,SourceOfDisposition,Proceeds,Cost,IncomeOrLoss,Code,
+FXDetail,Data,USD,"1,000 USD",01/02/2025,Forex 1000 EUR.USD,03/04/2025,Stock 2 AAPL,"1,012.50",970.87,41.63,,
+FXDetail,Data,USD,5 USD,03/04/2025,Stock -2 AAPL,03/05/2025,Net cash activity,4.80,4.85,(0.05),Adj,
+FXDetail,SubTotal,USD,,,,,,"1,017.30","975.72",41.58,,

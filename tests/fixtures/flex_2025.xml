@@ -1,0 +1,35 @@
+<FlexQueryResponse queryName="taxfolio_full" type="AF">
+<FlexStatements count="1">
+<FlexStatement accountId="U0000001" fromDate="20250101" toDate="20251231" period="" whenGenerated="20261029;070223">
+<AccountInformation accountId="U0000001" name="Test User" currency="EUR" street="Secret 1" primaryEmail="x@example.com" dateOfBirth="19000101" />
+<OpenPositions>
+<OpenPosition accountId="U0000001" currency="USD" assetCategory="STK" symbol="AAPL" conid="265598" isin="US0378331005" reportDate="20251231" position="3" markPrice="250" positionValue="750" costBasisMoney="600" fifoPnlUnrealized="150" levelOfDetail="SUMMARY" openDateTime="" />
+<OpenPosition accountId="U0000001" currency="USD" assetCategory="STK" symbol="AAPL" conid="265598" isin="US0378331005" reportDate="20251231" position="3" markPrice="250" positionValue="750" costBasisMoney="600" fifoPnlUnrealized="150" levelOfDetail="LOT" openDateTime="20250213;105730" />
+</OpenPositions>
+<Trades>
+<Order accountId="U0000001" currency="USD" assetCategory="STK" symbol="AAPL" conid="265598" isin="US0378331005" dateTime="20250213;105730" quantity="5" tradePrice="200" proceeds="-1000" ibCommission="-1" ibCommissionCurrency="USD" openCloseIndicator="O" notes="" cost="1001" fifoPnlRealized="0" ibOrderID="100" orderTime="20250213;105730" levelOfDetail="ORDER" orderType="LMT" />
+<Trade accountId="U0000001" currency="USD" fxRateToBase="0.95" assetCategory="STK" symbol="AAPL" conid="265598" isin="US0378331005" tradeID="1" dateTime="20250213;105730" quantity="5" tradePrice="200" proceeds="-1000" ibCommission="-1" ibCommissionCurrency="USD" openCloseIndicator="O" notes="" cost="1001" fifoPnlRealized="0" ibOrderID="100" transactionID="9001" orderReference="" orderTime="20250213;105730" levelOfDetail="EXECUTION" orderType="LMT" />
+<Trade accountId="U0000001" currency="USD" fxRateToBase="0.9" assetCategory="STK" symbol="AAPL" conid="265598" isin="US0378331005" tradeID="2" dateTime="20250902;093015" quantity="-2" tradePrice="240" proceeds="480" ibCommission="-1" ibCommissionCurrency="USD" openCloseIndicator="C" notes="P" cost="-400.4" fifoPnlRealized="78.6" ibOrderID="101" transactionID="9002" orderReference="" orderTime="20250821;014653" levelOfDetail="EXECUTION" orderType="STP" />
+<Lot accountId="U0000001" currency="USD" assetCategory="STK" symbol="AAPL" conid="265598" isin="US0378331005" dateTime="20250902;093015" quantity="2" tradePrice="200" openCloseIndicator="C" notes="ST" cost="400.4" fifoPnlRealized="78.6" transactionID="9001" openDateTime="20250213;105730" levelOfDetail="CLOSED_LOT" />
+<Trade accountId="U0000001" currency="USD" fxRateToBase="0.85" assetCategory="CASH" symbol="EUR.USD" conid="12087792" tradeID="3" dateTime="20250908;104849" quantity="1000" tradePrice="1.17" proceeds="-1170" ibCommission="0" ibCommissionCurrency="EUR" openCloseIndicator="" notes="AFx" ibOrderID="102" transactionID="9003" orderTime="20250908;104849" levelOfDetail="EXECUTION" orderType="MKT" />
+</Trades>
+<CorporateActions>
+<CorporateAction accountId="U0000001" currency="USD" assetCategory="STK" symbol="NVDA" conid="4815747" isin="US67066G1040" reportDate="20250610" dateTime="20250607;202500" actionDescription="NVDA(US67066G1040) SPLIT 10 FOR 1 (NVDA, NVIDIA CORP, US67066G1040)" proceeds="0" value="0" quantity="18" type="FS" transactionID="9100" actionID="500" levelOfDetail="DETAIL" />
+</CorporateActions>
+<CashTransactions>
+<CashTransaction accountId="U0000001" currency="USD" fxRateToBase="0.9" assetCategory="STK" symbol="COST" conid="272997" isin="US22160K1051" issuerCountryCode="US" description="COST(US22160K1051) CASH DIVIDEND USD 1.16 PER SHARE" dateTime="20250221;202000" settleDate="20250221" amount="1.16" type="Dividends" transactionID="9200" exDate="20250207" actionID="600" levelOfDetail="DETAIL" />
+<CashTransaction accountId="U0000001" currency="USD" fxRateToBase="0.9" assetCategory="STK" symbol="COST" conid="272997" isin="US22160K1051" description="COST(US22160K1051) CASH DIVIDEND USD 1.16 PER SHARE - US TAX" dateTime="20250221;202000" settleDate="20250221" amount="-0.17" type="Withholding Tax" transactionID="9201" actionID="600" levelOfDetail="DETAIL" />
+<CashTransaction accountId="U0000001" currency="EUR" fxRateToBase="1" dateTime="20250204" settleDate="20250204" amount="2000" type="Deposits/Withdrawals" transactionID="9202" levelOfDetail="DETAIL" />
+</CashTransactions>
+<Transfers />
+<SecuritiesInfo>
+<SecurityInfo currency="USD" assetCategory="STK" subCategory="COMMON" symbol="AAPL" description="APPLE INC" conid="265598" securityID="US0378331005" isin="US0378331005" listingExchange="NASDAQ" issuerCountryCode="US" />
+<SecurityInfo currency="USD" assetCategory="STK" subCategory="COMMON" symbol="COST" description="COSTCO WHOLESALE CORP" conid="272997" securityID="US22160K1051" isin="US22160K1051" listingExchange="NASDAQ" issuerCountryCode="US" />
+</SecuritiesInfo>
+<ConversionRates>
+<ConversionRate reportDate="20250213" fromCurrency="USD" toCurrency="EUR" rate="0.95" />
+<ConversionRate reportDate="20250213" fromCurrency="CZK" toCurrency="EUR" rate="0.0398" />
+</ConversionRates>
+</FlexStatement>
+</FlexStatements>
+</FlexQueryResponse>

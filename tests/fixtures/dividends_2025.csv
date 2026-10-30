@@ -1,0 +1,6 @@
+Account,Header,AccountNumber,AccountAlias,Name,BaseCurrency,
+Account,Data,U0000001,,Test User,EUR,
+DividendDetail,Header,DataDiscriminator,Currency,Symbol,Conid,Country,ReportDate,ExDate,Shares,RevenueComponent,QualifiedIndicator,Gross,GrossInBase,GrossInUSD,Withhold,WithholdInBase,WithholdInUSD
+DividendDetail,Data,Summary,USD,COST,272997,US,20250221,20250207,1,,,1.16,1.1,1.16,-0.17,-0.16,-0.17,
+DividendDetail,Data,RevenueComponent,USD,COST,272997,US,20250221,20250207,,Ordinary Dividend,Qualified - Meets Holding Period,1.16,1.1,1.16,-0.174,-0.165,-0.174,
+DividendDetail,Total,,US,,,,,,,,,1.16,1.1,1.16,-0.17,-0.16,-0.17,

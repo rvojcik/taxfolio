@@ -1,0 +1,157 @@
+{
+  "2024": {
+    "czk_gross_income_all_sales": "15000",
+    "czk_exempt_time_test_income": "0",
+    "czk_taxable_income": "15000",
+    "czk_taxable_expenses": "9100.00",
+    "czk_taxable_result": "5900.00",
+    "sales": [
+      {
+        "scenario": "E6",
+        "symbol": "KAMN",
+        "sold": "2024-06-03",
+        "bought": "2022-02-10",
+        "quantity": "100",
+        "currency": "CZK",
+        "income": "15000",
+        "expenses": "9100.00",
+        "result": "5900.00",
+        "cz_time_test_passed": false
+      }
+    ],
+    "foreign_currency_sales": []
+  },
+  "2025": {
+    "czk_gross_income_all_sales": "137500",
+    "czk_exempt_time_test_income": "46000",
+    "czk_taxable_income": "91500",
+    "czk_taxable_expenses": "42441.67",
+    "czk_taxable_result": "49058.33",
+    "sales": [
+      {
+        "scenario": "S3",
+        "symbol": "HUSA",
+        "sold": "2025-03-14",
+        "bought": "2022-10-12",
+        "quantity": "100",
+        "currency": "CZK",
+        "income": "40000",
+        "expenses": "9100.00",
+        "result": "30900.00",
+        "cz_time_test_passed": false
+      },
+      {
+        "scenario": "E2",
+        "symbol": "GAMR",
+        "sold": "2025-03-20",
+        "bought": "2022-09-15",
+        "quantity": "10",
+        "currency": "USD",
+        "income": "800",
+        "expenses": "502.00",
+        "result": "298.00",
+        "cz_time_test_passed": false
+      },
+      {
+        "scenario": "S3",
+        "symbol": "CEDR",
+        "sold": "2025-04-10",
+        "bought": "2021-04-15",
+        "quantity": "50",
+        "currency": "CZK",
+        "income": "20000",
+        "expenses": "9100.00",
+        "result": "10900.00",
+        "cz_time_test_passed": true
+      },
+      {
+        "scenario": "E3",
+        "symbol": "ZETM",
+        "sold": "2025-04-22",
+        "bought": "2022-05-16",
+        "quantity": "1000",
+        "currency": "USD",
+        "income": "5000",
+        "expenses": "2002.00",
+        "result": "2998.00",
+        "cz_time_test_passed": false
+      },
+      {
+        "scenario": "S3",
+        "symbol": "DUNA",
+        "sold": "2025-05-12",
+        "bought": "2021-05-15",
+        "quantity": "50",
+        "currency": "CZK",
+        "income": "15000",
+        "expenses": "9100.00",
+        "result": "5900.00",
+        "cz_time_test_passed": true
+      },
+      {
+        "scenario": "S3",
+        "symbol": "ILKA",
+        "sold": "2025-06-16",
+        "bought": "2022-11-15",
+        "quantity": "100",
+        "currency": "CZK",
+        "income": "25000",
+        "expenses": "9100.00",
+        "result": "15900.00",
+        "cz_time_test_passed": false
+      },
+      {
+        "scenario": "S3",
+        "symbol": "GOLF",
+        "sold": "2025-07-15",
+        "bought": "2022-12-07",
+        "quantity": "100",
+        "currency": "CZK",
+        "income": "5000",
+        "expenses": "9100.00",
+        "result": "-4100.00",
+        "cz_time_test_passed": false
+      },
+      {
+        "scenario": "E1",
+        "symbol": "ALFA",
+        "sold": "2025-08-20",
+        "bought": "2021-02-15",
+        "quantity": "50",
+        "currency": "CZK",
+        "income": "11000",
+        "expenses": "9083.33",
+        "result": "1916.67",
+        "cz_time_test_passed": true
+      },
+      {
+        "scenario": "E1",
+        "symbol": "ALFA",
+        "sold": "2025-08-20",
+        "bought": "2022-12-01",
+        "quantity": "25",
+        "currency": "CZK",
+        "income": "5500",
+        "expenses": "5041.67",
+        "result": "458.33",
+        "cz_time_test_passed": false
+      },
+      {
+        "scenario": "E4",
+        "symbol": "EPSI",
+        "sold": "2025-09-15",
+        "bought": "2025-02-03",
+        "quantity": "100",
+        "currency": "CZK",
+        "income": "16000",
+        "expenses": "10100.00",
+        "result": "5900.00",
+        "cz_time_test_passed": false
+      }
+    ],
+    "foreign_currency_sales": [
+      "GAMR",
+      "ZETM"
+    ]
+  }
+}
