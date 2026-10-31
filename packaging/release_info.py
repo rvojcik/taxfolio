@@ -1,6 +1,6 @@
 """Release helpers for CI.
 
-python packaging/release_info.py check-tag v1.2.0   # fails unless pyproject.toml says 1.2.0
+python packaging/release_info.py check-tag v1.2.0   # or 1.2.0; fails unless pyproject.toml says 1.2.0
 python packaging/release_info.py notes 1.2.0        # that version's section of CHANGELOG.md
 """
 
@@ -31,7 +31,7 @@ def main() -> None:
     command, value = sys.argv[1], sys.argv[2]
     if command == "check-tag":
         expected = f"v{project_version()}"
-        if value != expected:
+        if value not in (expected, expected[1:]):  # v0.1.0 or 0.1.0
             raise SystemExit(
                 f"Tag {value} does not match pyproject.toml version ({expected}). Bump the version first."
             )

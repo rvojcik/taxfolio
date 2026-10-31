@@ -1,11 +1,21 @@
 name: Release
 
-# A tag v<version> (matching pyproject.toml) builds the installers for Windows, macOS and Linux
-# and publishes them as a GitHub release. "Run workflow" builds them without publishing (test).
+# Builds the installers for Windows, macOS and Linux and attaches them to a GitHub release.
+# Two ways to release version X.Y.Z (must match pyproject.toml):
+#   - push a tag vX.Y.Z or X.Y.Z  → the release is created with notes from CHANGELOG.md
+#   - publish a release in GitHub → the installers are attached to it (its text is kept)
+# "Run workflow" only builds (installers in the run's artifacts) – a test without publishing.
 on:
   push:
-    tags: ["v*"]
+    tags: ["v*", "[0-9]*"]
+  release:
+    types: [published]
   workflow_dispatch:
+
+# A tag pushed while creating the release in GitHub may start two runs: let them go one after another
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -24,7 +34,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Tag matches the version in pyproject.toml
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: github.event_name != 'workflow_dispatch'
         run: uv run --no-project python packaging/release_info.py check-tag "${GITHUB_REF_NAME}"
       - run: sudo apt-get update && sudo apt-get install -y libegl1 libgl1 libxkbcommon0 libfontconfig1
       - run: uv sync
@@ -69,7 +79,8 @@ jobs:
 
   release:
     needs: build
-    if: startsWith(github.ref, 'refs/tags/v')
+    # tag push or published release; a manual "Run workflow" is only a test build
+    if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
@@ -79,8 +90,15 @@ jobs:
           merge-multiple: true
       - name: Release notes from CHANGELOG.md
         run: python3 packaging/release_info.py notes "${GITHUB_REF_NAME#v}" > release-notes.md
-      - uses: softprops/action-gh-release@v3
-        with:
-          name: ${{ github.ref_name }}
-          body_path: release-notes.md
-          files: installers/*
+      - name: Create the release or attach to the existing one
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1; then
+            # created in GitHub (or by an earlier run): keep its text, add / replace the installers
+            gh release upload "$TAG" installers/* --clobber --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$TAG" installers/* --verify-tag --title "$TAG" \
+              --notes-file release-notes.md --repo "$GITHUB_REPOSITORY"
+          fi

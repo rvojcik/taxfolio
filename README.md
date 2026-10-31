@@ -228,11 +228,15 @@ Test `tests/test_real_exports.py` je použije, pokud jsou lokálně k dispozici.
 Verze se řídí [semantickým verzováním](https://semver.org/) a je uvedena **jen v `pyproject.toml`**
 (aplikace ji čte odtud; `taxfolio --version`). Postup vydání:
 
-1. Zvýšit `version` v `pyproject.toml` a doplnit sekci do `CHANGELOG.md`.
-2. Commit a tag: `git tag v0.2.0 && git push origin main v0.2.0`.
-3. GitHub Actions (`.github/workflows/release.yml`) ověří, že tag odpovídá verzi, spustí testy,
-   sestaví instalátory pro Windows, macOS a Linux a zveřejní je jako GitHub Release s poznámkami
-   z `CHANGELOG.md`. Uživatelům se nová verze nabídne při příští kontrole.
+1. Zvýšit `version` v `pyproject.toml`, doplnit sekci do `CHANGELOG.md`, commit a push.
+2. Vydat **jedním z obou způsobů** (tag musí odpovídat verzi, s „v“ i bez):
+   - tag z příkazové řádky: `git tag v0.2.0 && git push origin v0.2.0` – release se vytvoří sám
+     s poznámkami z `CHANGELOG.md`;
+   - nebo v GitHubu **Releases → Draft a new release** s novým tagem `v0.2.0` → *Publish* – text
+     vydání zůstane váš.
+3. GitHub Actions (`.github/workflows/release.yml`) ověří verzi, spustí testy, sestaví instalátory
+   pro Windows, macOS a Linux a **připojí je k vydání** (běh trvá asi 10–15 minut). Uživatelům se nová
+   verze nabídne při příští kontrole.
 
 Zkušební sestavení bez zveřejnění: v GitHubu Actions → *Release* → *Run workflow* (instalátory jsou
 v artefaktech běhu). Lokálně: `uv run --group build python packaging/build.py`
