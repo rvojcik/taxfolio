@@ -1,6 +1,6 @@
 [project]
 name = "taxfolio"
-version = "0.1.1"
+version = "0.1.2"
 description = "IBKR portfolio journal and CZ/SK tax analyzer"
 license = "MIT"
 license-files = ["LICENSE"]
