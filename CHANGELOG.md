@@ -3,6 +3,12 @@
 Version numbers follow [Semantic Versioning](https://semver.org/): MAJOR.MINOR.PATCH. A release is
 the tag `v<version>`; the version itself lives only in `pyproject.toml`.
 
+## [0.1.1] – 2026-10-31
+
+Minor fixes, testing new version notification
+
+- workflow and new version changes
+
 ## [0.1.0] – 2026-10-30
 
 First public version.
