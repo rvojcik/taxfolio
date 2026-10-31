@@ -510,4 +510,11 @@ CATALOG: dict[str, str] = {
     "Automaticky kontrolovat nové verze (jednou denně)": "Check for new versions automatically (once a day)",
     "Zkontrolovat teď": "Check now",
     "Verze aplikace:": "Application version:",
+    "Import: {failed} z {total} souborů se nepodařilo načíst – podrobnosti v záložce Import.": "Import: {failed} of {total} files could not be read – details in the Import tab.",
+    "Import dokončen: {files} souborů, nových záznamů {new}.": "Import finished: {files} files, {new} new records.",
+    "Aktualizace ze zdrojů zastavena.": "Update from sources stopped.",
+    "Aktualizace dokončena, nových záznamů {new}.": "Update finished, {new} new records.",
+    "Aktualizace ze zdrojů selhala: {sources} – podrobnosti v záložce Import.": "Update from sources failed: {sources} – details in the Import tab.",
+    "Aktualizace dokončena, nových záznamů {new}; chyba u: {sources} (viz záložka Import).": "Update finished, {new} new records; failed: {sources} (see the Import tab).",
+    "Aktualizuji data ze zdrojů ({count})…": "Updating data from sources ({count})…",
 }

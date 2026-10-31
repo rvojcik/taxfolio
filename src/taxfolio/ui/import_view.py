@@ -32,6 +32,7 @@ from taxfolio.services.queries import BatchRow
 from taxfolio.services.source_sync import SourceResult
 from taxfolio.services.sources import InputSource, load_sources
 from taxfolio.ui import background
+from taxfolio.ui.notices import Level
 from taxfolio.ui.table_model import Column, RowTableModel
 from taxfolio.ui.theme import primary
 
@@ -50,6 +51,21 @@ QUERY_PERIOD_KEY = "query"
 SOURCES_ALL_KEY = "all"
 # Imports named in the delete confirmation; the rest is summed up
 MAX_LISTED = 15
+
+
+def _summary(results: list[SourceResult]) -> tuple[str, str]:
+    """One line for the status bar: what the update brought, how many sources failed."""
+    new = sum(res.total_new for r in results for res in r.imports)
+    failed = [r.source.name for r in results if r.error or r.import_errors]
+    if failed and len(failed) == len(results):
+        return _("Aktualizace ze zdrojů selhala: {sources} – podrobnosti v záložce Import.").format(
+            sources=", ".join(failed)
+        ), Level.ERROR.value
+    if failed:
+        return _(
+            "Aktualizace dokončena, nových záznamů {new}; chyba u: {sources} (viz záložka Import)."
+        ).format(new=new, sources=", ".join(failed)), Level.WARNING.value
+    return _("Aktualizace dokončena, nových záznamů {new}.").format(new=new), Level.SUCCESS.value
 
 
 class SourcesWorker(QObject):
@@ -80,6 +96,7 @@ class SourcesWorker(QObject):
 
 class ImportView(QWidget):
     data_changed = Signal()
+    notice = Signal(str, str, bool)  # text, level (ui/notices.Level), busy – shown in the status bar
 
     def __init__(self, engine: Engine) -> None:
         super().__init__()
@@ -210,12 +227,15 @@ class ImportView(QWidget):
 
     def import_paths(self, paths: list[Path]) -> None:
         self._log.clear()
+        new, failed = 0, 0
         for path in paths:
             try:
                 res = import_service.import_file(self._engine, path)
             except (ValueError, OSError) as exc:
                 self._log.appendPlainText(_("CHYBA  {file}: {error}").format(file=path.name, error=exc))
+                failed += 1
                 continue
+            new += res.total_new
             self._log.appendPlainText(
                 _("OK     {file}: nové {new}, duplicitní {duplicate}").format(
                     file=res.file_name, new=res.total_new, duplicate=res.total_duplicate
@@ -225,6 +245,15 @@ class ImportView(QWidget):
                 self._log.appendPlainText(f"       ⚠ {w}")
         self.refresh()
         self.data_changed.emit()
+        if failed:
+            level = Level.ERROR if failed == len(paths) else Level.WARNING
+            text = _(
+                "Import: {failed} z {total} souborů se nepodařilo načíst – podrobnosti v záložce Import."
+            )
+            self.notice.emit(text.format(failed=failed, total=len(paths)), level.value, False)
+        else:
+            text = _("Import dokončen: {files} souborů, nových záznamů {new}.")
+            self.notice.emit(text.format(files=len(paths), new=new), Level.SUCCESS.value, False)
 
     def _period(self) -> FlexPeriod:
         key = self._flex_period.currentData()
@@ -254,6 +283,9 @@ class ImportView(QWidget):
         worker.finished.connect(self._sources_fetched)
         worker.cancelled.connect(self._sync_done)
         self._show_running(True)
+        self.notice.emit(
+            _("Aktualizuji data ze zdrojů ({count})…").format(count=len(sources)), Level.INFO.value, True
+        )
         background.start(worker, "sources-update")
 
     def _sync_or_stop(self) -> None:
@@ -273,6 +305,7 @@ class ImportView(QWidget):
             )
         )
         self._show_running(False)
+        self.notice.emit(_("Aktualizace ze zdrojů zastavena."), Level.WARNING.value, False)
 
     def _show_running(self, running: bool) -> None:
         self._sync_btn.setText(_("Zastavit") if running else _("Aktualizovat ze zdrojů"))
@@ -306,6 +339,7 @@ class ImportView(QWidget):
                 self._log.appendPlainText(_("CHYBA  {file}: {error}").format(file=name, error=error))
         self.refresh()
         self.data_changed.emit()
+        self.notice.emit(*_summary(results), False)
 
     def _sync_done(self) -> None:
         self._worker = None

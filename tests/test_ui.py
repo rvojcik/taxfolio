@@ -404,8 +404,24 @@ def test_rates_download_in_background_not_in_reports(
         (worker,) = started  # only rates: the update check is off in the settings
         worker.run()  # type: ignore[attr-defined]  # what the thread does: flat test rates
         qapp.processEvents()
-        assert w._rates_worker is None and "kurzy" in w.statusBar().currentMessage().lower()
+        assert w._rates_worker is None and "kurzy" in w._notice.message().lower()
+        assert w._notice.level is not None and w._notice.level.value == "success"
         assert rates_service.missing_years(engine, [2025])["CNB"] == []
         w.close()
     finally:
         rates_service.set_auto_download(True)
+
+
+def test_status_notices_show_level_and_progress(window: MainWindow, fixtures: Path) -> None:
+    from taxfolio.ui.notices import Level
+
+    notice = window._notice
+    window.notify("Something went wrong", Level.ERROR)
+    assert notice.isVisibleTo(window) and notice.property("level") == "error"
+    assert notice.text().startswith("✕") and notice.message() == "Something went wrong"
+    window.notify("Working", Level.INFO, busy=True)
+    assert notice.text().startswith("⟳") and not notice._timer.isActive()  # busy stays until replaced
+    window._import.import_paths([fixtures / "flex_2025.xml"])  # a manual import reports its result
+    assert notice.level is Level.SUCCESS and "Import" in notice.message()
+    window._import.import_paths([fixtures / "nonexistent.csv"])
+    assert notice.level is Level.ERROR

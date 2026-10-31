@@ -12,9 +12,10 @@ from taxfolio import __version__
 from taxfolio.i18n import _
 from taxfolio.services import queries, updates
 from taxfolio.services.settings import load_settings
-from taxfolio.ui import background
+from taxfolio.ui import background, theme
 from taxfolio.ui.import_view import ImportView
 from taxfolio.ui.journal_view import JournalView
+from taxfolio.ui.notices import Level, Notice
 from taxfolio.ui.overview_view import OverviewView
 from taxfolio.ui.realized_view import RealizedView
 from taxfolio.ui.settings_view import SettingsView
@@ -40,8 +41,11 @@ class MainWindow(QMainWindow):
         self._rates_retry.setSingleShot(True)
         self._rates_retry.timeout.connect(self.refresh_rates)
         self._update_worker: background.UpdateWorker | None = None
-        # "New version available" link, kept in the status bar until the window closes
+        # Coloured notices on the left; "new version available" badge on the right until the window closes
+        self._notice = Notice()
+        self.statusBar().addWidget(self._notice)
         self._update_link = QLabel()
+        self._update_link.setObjectName("updateNotice")
         self._update_link.setOpenExternalLinks(True)
         self._update_link.hide()
         self.statusBar().addPermanentWidget(self._update_link)
@@ -81,6 +85,7 @@ class MainWindow(QMainWindow):
         self._settings.sources.sources_changed.connect(self._import.refresh_sources)
         self._settings.rebuild_requested.connect(self.rebuild_requested.emit)
         self._settings.rates_requested.connect(self.refresh_rates)
+        self._import.notice.connect(lambda text, level, busy: self.notify(text, Level(level), busy=busy))
         self._settings.update_check_requested.connect(lambda: self.check_for_update(manual=True))
         self._import.data_changed.connect(self.refresh_rates)  # imported years may lack rates
         self._account.currentIndexChanged.connect(self._scope_changed)
@@ -127,28 +132,26 @@ class MainWindow(QMainWindow):
         worker = self._rates_worker = background.RatesWorker(self._engine, years)
         worker.finished.connect(self._rates_ready)
         worker.failed.connect(self._rates_failed)
-        self.statusBar().showMessage(_("Stahuji kurzy ČNB a ECB…"))
+        self.notify(_("Stahuji kurzy ČNB a ECB…"), Level.INFO, busy=True)
         background.start(worker, "rates")
 
     def _rates_ready(self, fetched: list[str]) -> None:
         self._rates_worker = None
         if fetched:
-            self.statusBar().showMessage(
-                _("Staženy kurzy: {sources}").format(sources=", ".join(fetched)), 10_000
-            )
+            self.notify(_("Staženy kurzy: {sources}").format(sources=", ".join(fetched)), Level.SUCCESS)
             self._scope_changed()
             self._settings.refresh()
         else:
-            self.statusBar().showMessage(_("Kurzy jsou aktuální."), 5_000)
+            self.notify(_("Kurzy jsou aktuální."), Level.SUCCESS, timeout=5_000)
 
     def _rates_failed(self, error: str) -> None:
         self._rates_worker = None
         minutes = RATES_RETRY_MS // 60_000
-        self.statusBar().showMessage(
-            "⚠ "
-            + _(
+        self.notify(
+            _(
                 "Kurzy se nepodařilo stáhnout ({error}); používají se uložené. Další pokus za {minutes} min."
-            ).format(error=error, minutes=minutes)
+            ).format(error=error, minutes=minutes),
+            Level.WARNING,
         )
         self._rates_retry.start(RATES_RETRY_MS)
 
@@ -160,7 +163,7 @@ class MainWindow(QMainWindow):
         worker.finished.connect(lambda release: self._update_checked(release, manual))
         worker.failed.connect(lambda error: self._update_failed(error, manual))
         if manual:
-            self.statusBar().showMessage(_("Hledám novou verzi…"))
+            self.notify(_("Hledám novou verzi…"), Level.INFO, busy=True)
         background.start(worker, "update-check")
 
     def _update_checked(self, release: updates.Release | None, manual: bool) -> None:
@@ -168,13 +171,15 @@ class MainWindow(QMainWindow):
         updates.mark_checked(self._engine)
         if release is None:
             if manual:
-                self.statusBar().showMessage(
-                    _("Používáte nejnovější verzi {version}.").format(version=__version__), 10_000
+                self.notify(
+                    _("Používáte nejnovější verzi {version}.").format(version=__version__), Level.SUCCESS
                 )
             return
+        # The link takes the badge's text colour (a link would be accent on accent otherwise)
         self._update_link.setText(
-            '<a href="{url}">{text}</a>'.format(
+            '<a href="{url}" style="color: {color}; text-decoration: none;">⬆  {text}</a>'.format(
                 url=release.url,
+                color=theme.current().accent_ink,
                 text=_("Je k dispozici nová verze {version} – stáhnout").format(version=release.version),
             )
         )
@@ -184,9 +189,13 @@ class MainWindow(QMainWindow):
     def _update_failed(self, error: str, manual: bool) -> None:
         self._update_worker = None
         if manual:  # an automatic check stays quiet and tries again next start
-            self.statusBar().showMessage(
-                "⚠ " + _("Novou verzi se nepodařilo zjistit: {error}").format(error=error)
-            )
+            self.notify(_("Novou verzi se nepodařilo zjistit: {error}").format(error=error), Level.WARNING)
+
+    def notify(
+        self, text: str, level: Level = Level.INFO, timeout: int | None = -1, busy: bool = False
+    ) -> None:
+        """Coloured notice in the status bar (see ui/notices.py)."""
+        self._notice.show_notice(text, level, timeout, busy)
 
     def current_tab_index(self) -> int:
         return self._tabs.currentIndex()

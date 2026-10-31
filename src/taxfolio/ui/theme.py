@@ -47,6 +47,11 @@ class UiColors:
     selection: str  # selected rows (soft accent)
     positive_text: str  # gains in tables
     negative_text: str  # losses in tables
+    # Status bar notices: (background, text) per level – tinted, never colour alone (icon + text)
+    notice_info: tuple[str, str] = ("#dbe8f8", "#1f5aa6")
+    notice_success: tuple[str, str] = ("#dcf1dc", "#0b5d0b")
+    notice_warning: tuple[str, str] = ("#fcefcf", "#6e4b00")
+    notice_error: tuple[str, str] = ("#fadcdc", "#a11d1d")
 
 
 LIGHT = UiColors(
@@ -80,6 +85,10 @@ DARK = UiColors(
     selection="#1e3a5c",
     positive_text="#0ca30c",
     negative_text="#e66767",
+    notice_info=("#1e3a5c", "#a9cbf5"),
+    notice_success=("#163b18", "#86d886"),
+    notice_warning=("#47380f", "#f4cd6f"),
+    notice_error=("#4b1d1d", "#f2a3a3"),
 )
 
 # Settings-style section titles: space above each card and the gap between title and card (px)
@@ -235,6 +244,17 @@ QScrollBar::handle {{ background: {c.border}; border-radius: 4px; min-height: 30
 QScrollBar::handle:hover {{ background: {c.muted}; }}
 QScrollBar::add-line, QScrollBar::sub-line {{ width: 0; height: 0; }}
 QScrollBar::add-page, QScrollBar::sub-page {{ background: transparent; }}
+
+/* status bar with coloured notices (ui/notices.py) */
+QStatusBar {{ background: {c.surface}; border-top: 1px solid {c.border}; min-height: 34px; }}
+QStatusBar::item {{ border: none; }}
+QLabel#notice {{ border-radius: 12px; padding: 4px 12px; font-weight: 600; margin: 3px 4px; }}
+QLabel#notice[level="info"] {{ background: {c.notice_info[0]}; color: {c.notice_info[1]}; }}
+QLabel#notice[level="success"] {{ background: {c.notice_success[0]}; color: {c.notice_success[1]}; }}
+QLabel#notice[level="warning"] {{ background: {c.notice_warning[0]}; color: {c.notice_warning[1]}; }}
+QLabel#notice[level="error"] {{ background: {c.notice_error[0]}; color: {c.notice_error[1]}; }}
+QLabel#updateNotice {{ background: {c.accent}; color: {c.accent_ink}; border-radius: 12px;
+                       padding: 4px 12px; font-weight: 600; margin: 3px 4px; }}
 
 /* overview tiles */
 QFrame#tile {{ background: {c.surface}; border: 1px solid {c.border}; border-radius: 10px; }}
